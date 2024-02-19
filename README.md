@@ -25,8 +25,7 @@ The moment we all have been wating for is here. Let's get started with React!
   - [React Developer Tools](#react-developer-tools)
 
 - [Components In React](#components-in-react)
-  - [Return value of components](#return-value-of-components)
-- [JSX](#jsx)
+- [JSX](#jsx-in-components)
 - [Props](#props)
 
 </details>
@@ -141,15 +140,139 @@ In summary, React simplifies frontend development by providing a declarative syn
 
 ## Components in React
 
+To create a component in React you just have to create a function that starts with a capital letter and returns JSX.
+
+```jsx
+export function Footer() {
+  return <footer className="footer">This is the footer</footer>;
+}
+```
+
+This footer can then be used inside another component as a JSX element. In this case I am going to import this footer component inside my app component.
+
+```jsx
+import { Footer } from "./Footer";
+
+function App() {
+  return (
+    <>
+      <h1>This is my first App!</h1>
+      <div>
+        <p>This is the content of my app</p>
+        <section>This is a section</section>
+      </div>
+      <Footer />
+    </>
+  );
+}
+```
+
+Remember to import the footer as you do any regular function and then encapsulate that inside a JSX element like the example above. Now React will inject the Footer component inside the App component.
+
 [Back to top](#intro-to-react)
 
-### Return value of Components
+## JSX in components
 
-[ReactNode vs JSX Element vs ReactElement](https://www.totaltypescript.com/jsx-element-vs-react-reactnode)
+JSX _( JavaScript XML )_ is a syntax extension for JavaScript that is commonly used with React to describe what the UI should look like. JSX allows you to write HTML-like code in your JavaScript files, making it more intuitive to define the structure of your React components.
 
-[Back to top](#intro-to-react)
+Here are some key points about JSX:
 
-## JSX
+- **HTML-Like Syntax**
+
+  JSX looks similar to HTML, making it easier for developers who are already familiar with HTML to work with React. However, it's important to note that JSX is not HTML; it's a syntax extension for JavaScript.
+
+  ```jsx
+  const element = <h1>Hello, React!</h1>;
+  ```
+
+- **JavaScript Expressions**
+
+  You can embed JavaScript expressions inside JSX by wrapping them in curly braces `{ }`. This allows you to dynamically generate content.
+
+  ```jsx
+  const name = "Niklas";
+  const element = <p>Hello, {name}!</p>;
+  ```
+
+- **Components**
+
+  JSX allows you to create custom components easily. Components in React are reusable and self-contained pieces of code that encapsulate a specific piece of functionality.
+
+  ```jsx
+  const Componenet = () => {
+    return <div>Hello from Componenet!</div>;
+  };
+  ```
+
+- **Attributes**
+
+  JSX uses HTML-like attributes for defining component properties. React will convert these attributes into props, which can be accessed within the component.
+
+  ```jsx
+  const attrVal = "value";
+  const element = <div myProp={attrVal}>Hello, React!</div>;
+  ```
+
+- **Self-Closing Tags**
+
+  Just like in HTML, JSX supports self-closing tags for elements that don't have any content.
+
+  ```jsx
+  const imgElement = <img src="image.jpg" alt="An example" />;
+  ```
+
+- **ClassName vs. Class**
+
+  To specify the CSS class for an element, you use `className` in JSX, not class. This is because class is a reserved keyword in JavaScript.
+
+  ```jsx
+  const element = <div className="myClass">Hello, React!</div>;
+  ```
+
+- **JSX is Transpiled**
+
+  JSX is not understood by browsers directly. It needs to be transpiled into regular JavaScript before it can be executed in the browser. In the react case, the internal workings of React takes care of that.
+
+  ```jsx
+  // JSX
+  const element = <h1>Hello, React!</h1>;
+
+  // After transpilation
+  const element = React.createElement("h1", null, "Hello, React!");
+  ```
+
+  To explain what is happening in the above code, in the method more specifically, it works like this:
+
+1. **Type _ (String or Component )_**: The first argument is the type of the element you want to create. It can be a string representing an HTML tag (like 'div', 'h1', etc.) or a reference to a React component.
+
+2. **Props _( Object or Null )_**: The second argument is an object representing the properties (or props) you want to pass to the element or component. In the transpiled example, null is passed because there are no additional props.
+
+3. **Children _( Any additional arguments )_**: Any additional arguments after the props are considered as children of the element. In the transpiled example, the third argument is the string 'Hello, React!', representing the text content of the `<h1>` element.
+
+The method `React.CreateElement..` will create an object that looks like this:
+
+```jsx
+const element = {
+  type: "h1",
+  props: {
+    children: "Hello, React!",
+  },
+};
+```
+
+When React encounters this object during the rendering process, it uses the information stored in the object to create the corresponding DOM elements.
+
+```jsx
+// Rendering process (very simplified)
+const domElement = document.createElement(element.type);
+domElement.textContent = element.props.children;
+```
+
+This is a simplified example, and React performs additional optimizations and reconciliations to efficiently update the DOM based on changes in the application state.
+
+In summary, `React.createElement` is a crucial part of the React process, creating a JavaScript object representation of the desired UI element or component. This object is then used by React to efficiently update the DOM when needed.
+
+JSX is a powerful and expressive syntax that simplifies the creation of UI components in React. It combines the declarative nature of React with the familiarity of HTML, making it more readable and maintainable.
 
 [Back to top](#intro-to-react)
 
