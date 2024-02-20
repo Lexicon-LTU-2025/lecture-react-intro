@@ -1,0 +1,27 @@
+.btn {
+  all: unset;
+  background-color: navy;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: whitesmoke;
+  margin-inline: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn.outline {
+  background-color: transparent;
+  border: 1px solid navy;
+  color: navy;
+}
+
+.btn.danger {
+  background-color: red;
+  color: black;
+}
+
+.btn.danger.outline {
+  background-color: transparent;
+  border: 1px solid red;
+  color: red;
+}

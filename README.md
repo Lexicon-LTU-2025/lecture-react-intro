@@ -27,6 +27,11 @@ The moment we all have been wating for is here. Let's get started with React!
 - [Components In React](#components-in-react)
 - [JSX](#jsx-in-components)
 - [Props](#props)
+  - [What are props?](#what-are-props)
+  - [Passing props](#passing-props)
+  - [Accessing props](#accessing-props)
+  - [Dynamic data](#dynamic-data)
+  - [Immutable](#immutable)
 
 </details>
 
@@ -277,5 +282,80 @@ JSX is a powerful and expressive syntax that simplifies the creation of UI compo
 [Back to top](#intro-to-react)
 
 ## Props
+
+Props is short for "properties," and it refers to the way you pass data from one component to another. Props are a fundamental concept in React and are used to communicate and share information between different parts of your application.
+
+[Back to top](#intro-to-react)
+
+### What are props?
+
+Props are pieces of data that you can pass from a parent component to a child component in React. They allow you to make your components more dynamic and reusable by injecting different data into them.
+
+[Back to top](#intro-to-react)
+
+### Passing props
+
+You pass props from a parent component to a child component by adding attributes to the child component tag in the parent's JSX.
+
+```tsx
+function ParentComponent() {
+  return <ChildComponent name="John" age={25} />;
+}
+
+interface IChildComponentProps {
+  name: string;
+  age: number;
+}
+
+function ChildComponent(props: IChildComponentProps) {
+  return (
+    <p>
+      {props.name} is {props.age} years old.
+    </p>
+  );
+}
+```
+
+[Back to top](#intro-to-react)
+
+### Accessing props
+
+In the child component, you can access the passed props through the function's parameter _( often named props )_. Each prop is accessed using dot notation, like `props.name` or `props.age`.
+
+[Back to top](#intro-to-react)
+
+### Dynamic data
+
+Props allow you to make your components more flexible by changing their behavior based on the data passed to them. For example, you can reuse the `ChildComponent` with different names and ages by passing different values as props.
+
+```tsx
+function App() {
+  return (
+    <div>
+      <ChildComponent name="Alice" age={30} />
+      <ChildComponent name="Bob" age={22} />
+    </div>
+  );
+}
+
+interface IChildComponentProps {
+  name: string;
+  age: number;
+}
+
+function ChildComponent(props: IChildComponentProps) {
+  return (
+    <p>
+      {props.name} is {props.age} years old.
+    </p>
+  );
+}
+```
+
+[Back to top](#intro-to-react)
+
+### Immutable
+
+Props in React are immutable, meaning their values cannot be changed inside the child component. They are read-only. If you need to modify data, you typically do it in the parent component and pass the updated data down as a new prop.
 
 [Back to top](#intro-to-react)
