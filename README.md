@@ -27,11 +27,19 @@ The moment we all have been wating for is here. Let's get started with React!
 - [Components In React](#components-in-react)
 - [JSX](#jsx-in-components)
 - [Props](#props)
+
   - [What are props?](#what-are-props)
   - [Passing props](#passing-props)
   - [Accessing props](#accessing-props)
   - [Dynamic data](#dynamic-data)
   - [Immutable](#immutable)
+  - [Functions as props](#functions-as-props)
+
+- [Hooks](#hooks)
+  - [useState](#usestate)
+    - [Two forms of the setState](#two-forms-of-the-setstate)
+  - [useEffect](#useeffect)
+  - [useRef](#useref)
 
 </details>
 
@@ -357,5 +365,219 @@ function ChildComponent(props: IChildComponentProps) {
 ### Immutable
 
 Props in React are immutable, meaning their values cannot be changed inside the child component. They are read-only. If you need to modify data, you typically do it in the parent component and pass the updated data down as a new prop.
+
+### Functions as props
+
+As stated earlier, props of react only flows in one direction: from top to bottom, from parent component to child component. The props can never travel in any other direction. This makes your state handling predictable and you can almost always trace the origin of a piece of state. See this concept as a way for the parent component to communicate with its child components. However, wouldn't it be supurb to somehow emulate a communication in the other direction? From a child component to its parent component? We can do that by passing down a reference to a function from a parent component to a child component. This gives the child component th possibility to invoke a function in its parent component, and depending on how that function is constructed the child component could in reality update state in the parent component that affects the rendering of the said child component. Nice right?!
+
+Let's do an example on a simple todo list. Here we have a `TodoList.tsx` that is responsible for rendering a todo list containing of `TodoListItem.tsx`-components. If we want to remove a todo list item from the list we want to click on an icon of some sort inside the `TodoListItem` right?
+
+When that icon is clicked we want to invoke a deleting function in the parent component and delete the clicked todo list item. Since the parent components is in charge of the state of the todo list, the deleting functionality should be located there.
+
+_TodoList.tsx_
+
+```tsx
+import TodoListItem from "./TodoListItem";
+
+export function TodoList(): JSX.Element {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const deleteTodo = (todoId: number): void => {
+    // ..code to delete a todo from the todo list and update the state
+  };
+
+  return (
+    <section className="todo-list">
+      {todos.map((todo) => (
+        <TodoListItem deleteTodo={deleteTodo} key={todo.id} todo={todo} />
+      ))}
+    </section>
+  );
+}
+```
+
+_TodoListItem.tsx_
+
+```tsx
+interface ITodoListItemProps {
+  deleteTodo: (todoId: number) => void;
+  todo: ITodo;
+}
+
+export function TodoListItem(props: ITodoListItemProps): JSX.Element {
+  return (
+    <article className="todo">
+      <span>{todo.content}</span>
+      <span class="material-symbols-outlined" onClick={() => deleteTodo(todo.id)}>
+        delete
+      </span>
+    </article>
+  );
+}
+```
+
+Above we can see something that we haven't seen before, and it's the structure of the handler function on the "onClick" attribute.
+
+`onClick={() => deleteTodo(todo.id)}`
+
+The reason why it looks like this is becase the prop-function needs a parameter, and we can put it like this:
+
+`onClick={deleteTodo(todo.id)}`
+
+This would invoke to function straigh away when the component renders and that would lead to a behaviour that we wouldn't want. So in order to get around that we put the invocation of the prop-functions inside an anomynous arrow function that is not beeing invoked straight away.
+
+`onClick={() => deleteTodo(todo.id)}`
+
+If the prop-function didn't accept a parameter we could have just put the reference to the prop-function inside the curly brackets.
+
+[Back to top](#intro-to-react)
+
+## Hooks
+
+Hooks are functions that allow you to use state and other React features in functional components. They were introduced in React version 16.8 to provide a way to use state and lifecycle features in functional components, which were traditionally only available in class components.
+
+There are several hooks included in React and almost every "react specific third party library" is utilizing and provides hooks for us to use in our applications.
+
+Hooks are very versatile and can be used in many different use cases. Think of them as special JS functions with access to all React features despite not being a component. They usually contain business logic so it can be reused across your application.
+
+There are two rules that must be followed when using and creating them:
+
+1. Only call hooks at the top level of your component.
+2. Only call hooks from React functional components or other hooks.
+
+[Back to top](#intro-to-react)
+
+### `useState`
+
+`useState` hook is used to add state to functional components. The useState hook returns an array with two elements: the current state value and a function that allows you to update the state.
+
+```tsx
+import React, { useState } from "react";
+
+function Counter() {
+  // Declare a state variable named "count" with initial value 0
+  const [count, setCount] = useState<number>(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      {/* onClick event handler to update the count state */}
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+```
+
+`useState<number>(0)` initializes the state variable count with an initial value of 0. The setCount function is used to update the value of count. When the button is clicked, it triggers the onClick event, and the setCount function is called to increment the count by 1.
+
+React re-renders the component whenever the state is updated, and the updated state is reflected in the UI.
+
+You can use multiple useState hooks in a single component to manage different pieces of state.
+
+```tsx
+import React, { useState } from "react";
+
+function Example() {
+  const [count, setCount] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+
+      <p>Your name is: {name}</p>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+    </div>
+  );
+}
+```
+
+In this example, there are two separate state variables, count and name, each with its own useState hook. The setCount and setName functions are used to update these state variables, and the UI is re-rendered accordingly.
+
+[Back to top](#intro-to-react)
+
+#### Two forms of the setState
+
+The set-method from the useState hook comes in two forms and they are:
+
+- **Updating the state based on the previous value**
+
+  If the new state depends on the previous state, it's recommended to use the functional form of `setState`, where you provide a function as an argument to `setState`. This function receives the previous state as its argument and returns the new state.
+
+  ```js
+  setState((prevState) => {
+    // calculate and return new state based on prevState
+    return newState;
+  });
+  ```
+
+  This ensures that you are working with the latest state and helps prevent race conditions when updating state asynchronously.
+
+- **Updating state without depending on the previous value**
+
+  If the new state does not depend on the previous state, you can simply pass the new state value to `setState`. In this case, you can use the non-functional form of `setState`.
+
+  ```js
+  setState(newState);
+  ```
+
+Both forms of setState will trigger a re-render of the component with the updated state.
+
+Here is an actual example of the usage of the different forms:
+
+```tsx
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState<number>(0);
+
+  const increment = () => {
+    // Using the functional form of setState
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  const reset = () => {
+    // Using the non-functional form of setState
+    setCount(0);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+}
+```
+
+In the increment function, the functional form of setCount is used to correctly update the count based on its previous value. In the reset function, the non-functional form is used because the new state _( 0 in this case )_ does not depend on the previous state.
+
+[Back to top](#intro-to-react)
+
+### `useEffect`
+
+`useEffect` is a hook in React that allows functional components to perform side effects. Side effects in React typically include data fetching, subscriptions, manual DOM manipulations, and other operations that cannot be handled during the render phase. useEffect is a replacement for lifecycle methods like `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in class components.
+
+```jsx
+useEffect(() => {
+  // Side effect code here
+
+  return () => {
+    // Cleanup code (optional)
+  };
+}, [dependencies]);
+```
+
+1. The first argument to useEffect is a function that contains the code for the side effect you want to perform.
+
+2. The second argument is an optional array of dependencies. If the dependencies array is provided, the effect will only re-run if any of the values in the dependencies array change between renders. If the dependencies array is omitted, the effect will run after every render.
+
+3. The function returned from useEffect can be used for cleanup. This cleanup function will be executed before the next render or before the component is unmounted. It's useful for cleaning up resources like subscriptions or timers to prevent memory leaks.
+
+[Back to top](#intro-to-react)
+
+### `useRef`
 
 [Back to top](#intro-to-react)
