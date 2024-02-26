@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Counter } from "./Counter";
 import { Navbar } from "./Navbar";
+import { SignIn } from "./SignIn";
+
+export interface ISignInDetails {
+  username: string;
+  password: string;
+}
 
 function App() {
   const [count, setCount] = useState(23);
@@ -25,6 +31,10 @@ function App() {
     setCount(number);
   };
 
+  const signInUser = (signInDetails: ISignInDetails) => {
+    console.log(signInDetails);
+  };
+
   return (
     <>
       <Navbar count={count} />
@@ -35,6 +45,7 @@ function App() {
         handleOnResetClick={resetCount}
         updateCount={updateCount}
       />
+      <SignIn signInUser={signInUser} />
     </>
   );
 }
