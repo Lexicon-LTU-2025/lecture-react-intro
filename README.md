@@ -23,6 +23,7 @@ The moment we all have been wating for is here. Let's get started with React!
   - [Community and Ecosystem](#community-and-ecosystem)
   - [JSX](#jsx)
   - [React Developer Tools](#react-developer-tools)
+  - [Summary](#summary)
 
 - [Components In React](#components-in-react)
 - [JSX](#jsx-in-components)
@@ -33,7 +34,6 @@ The moment we all have been wating for is here. Let's get started with React!
   - [Accessing props](#accessing-props)
   - [Dynamic data](#dynamic-data)
   - [Immutable](#immutable)
-  - [Functions as props](#functions-as-props)
 
 </details>
 
@@ -117,9 +117,15 @@ JSX, a syntax extension for JavaScript, allows developers to write HTML elements
 
 The availability of browser extensions like React Developer Tools provides powerful debugging and profiling capabilities. Developers can inspect component hierarchies, view state changes, and optimize performance more effectively.
 
+[React Developer Tools - Link](https://react.dev/learn/react-developer-tools)
+
 [Back to top](#intro-to-react)
 
+### Summary
+
 In summary, React simplifies frontend development by providing a declarative syntax, component-based architecture, virtual DOM, and a strong ecosystem, which collectively enhance code organization, maintainability, and overall developer productivity.
+
+[Back to top](#intro-to-react)
 
 ## Components in React
 
@@ -150,7 +156,7 @@ Here are some key points about JSX:
   JSX looks similar to HTML, making it easier for developers who are already familiar with HTML to work with React. However, it's important to note that JSX is not HTML; it's a syntax extension for JavaScript.
 
   ```jsx
- 
+
   ```
 
 - **JavaScript Expressions**
@@ -270,40 +276,3 @@ Props allow you to make your components more flexible by changing their behavior
 ### Immutable
 
 Props in React are immutable, meaning their values cannot be changed inside the child component. They are read-only. If you need to modify data, you typically do it in the parent component and pass the updated data down as a new prop.
-
-### Functions as props
-
-As stated earlier, props of react only flows in one direction: from top to bottom, from parent component to child component. The props can never travel in any other direction. This makes your state handling predictable and you can almost always trace the origin of a piece of state. See this concept as a way for the parent component to communicate with its child components. However, wouldn't it be supurb to somehow emulate a communication in the other direction? From a child component to its parent component? We can do that by passing down a reference to a function from a parent component to a child component. This gives the child component th possibility to invoke a function in its parent component, and depending on how that function is constructed the child component could in reality update state in the parent component that affects the rendering of the said child component. Nice right?!
-
-Let's do an example on a simple todo list. Here we have a `TodoList.tsx` that is responsible for rendering a todo list containing of `TodoListItem.tsx`-components. If we want to remove a todo list item from the list we want to click on an icon of some sort inside the `TodoListItem` right?
-
-When that icon is clicked we want to invoke a deleting function in the parent component and delete the clicked todo list item. Since the parent components is in charge of the state of the todo list, the deleting functionality should be located there.
-
-_TodoList.tsx_
-
-```tsx
-
-```
-
-_TodoListItem.tsx_
-
-```tsx
-
-```
-
-Above we can see something that we haven't seen before, and it's the structure of the handler function on the "onClick" attribute.
-
-`onClick={() => deleteTodo(todo.id)}`
-
-The reason why it looks like this is becase the prop-function needs a parameter, and we can put it like this:
-
-`onClick={deleteTodo(todo.id)}`
-
-This would invoke to function straigh away when the component renders and that would lead to a behaviour that we wouldn't want. So in order to get around that we put the invocation of the prop-functions inside an anomynous arrow function that is not beeing invoked straight away.
-
-`onClick={() => deleteTodo(todo.id)}`
-
-If the prop-function didn't accept a parameter we could have just put the reference to the prop-function inside the curly brackets.
-
-[Back to top](#intro-to-react)
-
