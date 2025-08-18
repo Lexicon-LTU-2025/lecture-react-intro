@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react';
+import { List } from './List';
 
 export const Instructions = (): ReactElement => {
   return (
     <article className="right-side instructions-container">
       <h3>Instruktioner</h3>
-      <ol className="instructions-list">
+      <List className="instructions-list" type="ol">
         <li>
           Smula sönder 10 stycken digistivetex och blanda sen med smöret. Bred ut det i botten av en
           en rund form med lösbara kanter. Det ska bli som en tjockt täcke på botten av formen.
@@ -33,7 +34,7 @@ export const Instructions = (): ReactElement => {
         <li>Häll smeten i formen, smula över de resterande digistivetexen om du vill.</li>
         <li>Ställ in i frysen över natten.</li>
         <li>Servera och toppa med det du känner för.</li>
-      </ol>
+      </List>
     </article>
   );
 };

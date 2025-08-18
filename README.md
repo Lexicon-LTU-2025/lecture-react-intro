@@ -289,7 +289,7 @@ JSX is not understood by browsers directly. It must be transpiled into regular J
 const element = <h1 id="main-header">Hello, React!</h1>;
 
 // After transpilation
-const element = React.createElement('h1', { id: "main-header" }, 'Hello, React!');
+const element = React.createElement('h1', { id: 'main-header' }, 'Hello, React!');
 ```
 
 To explain what is happening in the above code, in the method more specifically, it works like this:
@@ -315,9 +315,9 @@ const element = {
 When React renders, it uses this object to create and efficiently update the DOM.
 
 ```jsx
-  const domEl = document.createElement(element.type)
-  domEl.id = element.props.id;
-  domEl.textContent = element.props.children;
+const domEl = document.createElement(element.type);
+domEl.id = element.props.id;
+domEl.textContent = element.props.children;
 ```
 
 This is a simplified example, and React performs additional optimizations and reconciliations to efficiently update the DOM based on changes in the application state.
@@ -344,24 +344,79 @@ Props are pieces of data that you can pass from a parent component to a child co
 
 You pass props from a parent component to a child component by adding attributes to the child component tag in the parent's JSX.
 
-```tsx
+Parent.tsx
 
+```tsx
+import { ReactElement } from 'react';
+import { Child } from './Child';
+
+function Parent(): ReactElement {
+  return <Child name="Niklas" age={25} />;
+}
+```
+
+Child.tsx
+
+```tsx
+import { ReactElement } from 'react';
+
+interface IChildProps {
+  name: string;
+  age: number;
+}
+
+function Child(props: IChildProps): ReactElement {
+  // Regular props picking
+  // const name = props.name;
+  // const age = props.age;
+
+  // Destructuring
+  const { name, age } = props;
+
+  return (
+    <p>
+      {name} is {age} years old
+    </p>
+  );
+}
+
+// You can also destruct the props directly in the parenthesis
+function Child({ name, age }: IChildProps): ReactElement {
+  return (
+    <p>
+      {name} is {age} years old
+    </p>
+  );
+}
 ```
 
 [Back to top](#intro-to-react)
 
 ### Accessing props
 
-In the child component, you can access the passed props through the function's parameter _( often named props )_. Each prop is accessed using dot notation, like `props.name` or `props.age`.
+In the child component, you can access the passed props through the function's parameter _( often named props )_. Each prop is accessed using dot notation, like `props.name` or `props.age`. Or, you can use object destructuring.
 
 [Back to top](#intro-to-react)
 
 ### Dynamic data
 
-Props allow you to make your components more flexible by changing their behavior based on the data passed to them. For example, you can reuse the `ChildComponent` with different names and ages by passing different values as props.
+Props allow you to make your components more flexible by changing their behavior based on the data passed to them. For example, you can reuse the `Child` with different names and ages by passing different values as props.
+
+Parent.tsx
 
 ```tsx
+import { ReactElement } from 'react';
+import { Child } from './Child';
 
+function Parent(): ReactElement {
+  return (
+    <section>
+      <Child name="Niklas" age={25} />;
+      <Child name="Henrik" age={30} />;
+      <Child name="Erik" age={35} />;
+    </section>
+  );
+}
 ```
 
 [Back to top](#intro-to-react)
