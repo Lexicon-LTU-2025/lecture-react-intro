@@ -6,7 +6,7 @@ The moment we all have been wating for is here. Let's get started with React!
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" style="padding-block: 40px; width: 200px">
 </div>
 
-<details>
+<details open>
   <summary>Table of content</summary>
 
 - [What is React?](#what-is-react)
@@ -35,16 +35,6 @@ The moment we all have been wating for is here. Let's get started with React!
   - [Immutable](#immutable)
   - [Functions as props](#functions-as-props)
 
-- [Hooks](#hooks)
-
-  - [useState](#usestate)
-    - [Two forms of the setState](#two-forms-of-the-setstate)
-  - [useEffect](#useeffect)
-
-    - [Common usages of useEffect](#common-usages-of-useeffect)
-
-  - [useRef](#useref)
-
 </details>
 
 ## What is React?
@@ -70,24 +60,7 @@ React uses a declarative syntax, allowing developers to describe the desired out
 React promotes a modular and component-based approach to building user interfaces. This makes it easier to manage and organize code, especially in large and complex applications, by breaking down the UI into reusable components.
 
 ```jsx
-// Vanilla JavaScript (without components)
-const header = document.createElement("header");
-const title = document.createElement("h1");
-title.classlist.add("title");
-title.innerText = "My app";
-header.appendChild(title);
-document.querySelector(".root").appendChild(header);
 
-// React ( with componets )
-const Header = () => {
-  return (
-    <header>
-      <h1 className="title">My App</h1>
-    </header>
-  );
-};
-
-ReactDOM.render(<Header />, document.getElementById("root"));
 ```
 
 [Back to top](#intro-to-react)
@@ -135,14 +108,7 @@ React has a large and active community, which results in a rich ecosystem of lib
 JSX, a syntax extension for JavaScript, allows developers to write HTML elements and components in a syntax that looks similar to XML or HTML. This makes the code more readable and helps in visualizing the structure of the UI within the JavaScript code.
 
 ```jsx
-// Vanilla JavaScript
-const element = document.createElement("div");
-element.innerText = "Hello world!";
-document.getElementById("root").appendChild(element);
 
-// React
-const element = <div>Hello world!</div>;
-ReactDom.render(element, document.getElementById("root"));
 ```
 
 [Back to top](#intro-to-react)
@@ -160,28 +126,13 @@ In summary, React simplifies frontend development by providing a declarative syn
 To create a component in React you just have to create a function that starts with a capital letter and returns JSX.
 
 ```jsx
-export function Footer() {
-  return <footer className="footer">This is the footer</footer>;
-}
+
 ```
 
 This footer can then be used inside another component as a JSX element. In this case I am going to import this footer component inside my app component.
 
 ```jsx
-import { Footer } from "./Footer";
 
-function App() {
-  return (
-    <>
-      <h1>This is my first App!</h1>
-      <div>
-        <p>This is the content of my app</p>
-        <section>This is a section</section>
-      </div>
-      <Footer />
-    </>
-  );
-}
 ```
 
 Remember to import the footer as you do any regular function and then encapsulate that inside a JSX element like the example above. Now React will inject the Footer component inside the App component.
@@ -199,7 +150,7 @@ Here are some key points about JSX:
   JSX looks similar to HTML, making it easier for developers who are already familiar with HTML to work with React. However, it's important to note that JSX is not HTML; it's a syntax extension for JavaScript.
 
   ```jsx
-  const element = <h1>Hello, React!</h1>;
+ 
   ```
 
 - **JavaScript Expressions**
@@ -207,8 +158,7 @@ Here are some key points about JSX:
   You can embed JavaScript expressions inside JSX by wrapping them in curly braces `{ }`. This allows you to dynamically generate content.
 
   ```jsx
-  const name = "Niklas";
-  const element = <p>Hello, {name}!</p>;
+
   ```
 
 - **Components**
@@ -216,9 +166,7 @@ Here are some key points about JSX:
   JSX allows you to create custom components easily. Components in React are reusable and self-contained pieces of code that encapsulate a specific piece of functionality.
 
   ```jsx
-  const Componenet = () => {
-    return <div>Hello from Componenet!</div>;
-  };
+
   ```
 
 - **Attributes**
@@ -226,8 +174,7 @@ Here are some key points about JSX:
   JSX uses HTML-like attributes for defining component properties. React will convert these attributes into props, which can be accessed within the component.
 
   ```jsx
-  const attrVal = "value";
-  const element = <div myProp={attrVal}>Hello, React!</div>;
+
   ```
 
 - **Self-Closing Tags**
@@ -235,7 +182,7 @@ Here are some key points about JSX:
   Just like in HTML, JSX supports self-closing tags for elements that don't have any content.
 
   ```jsx
-  const imgElement = <img src="image.jpg" alt="An example" />;
+
   ```
 
 - **ClassName vs. Class**
@@ -243,7 +190,7 @@ Here are some key points about JSX:
   To specify the CSS class for an element, you use `className` in JSX, not class. This is because class is a reserved keyword in JavaScript.
 
   ```jsx
-  const element = <div className="myClass">Hello, React!</div>;
+
   ```
 
 - **JSX is Transpiled**
@@ -251,11 +198,7 @@ Here are some key points about JSX:
   JSX is not understood by browsers directly. It needs to be transpiled into regular JavaScript before it can be executed in the browser. In the react case, the internal workings of React takes care of that.
 
   ```jsx
-  // JSX
-  const element = <h1>Hello, React!</h1>;
 
-  // After transpilation
-  const element = React.createElement("h1", null, "Hello, React!");
   ```
 
   To explain what is happening in the above code, in the method more specifically, it works like this:
@@ -269,20 +212,13 @@ Here are some key points about JSX:
 The method `React.CreateElement..` will create an object that looks like this:
 
 ```jsx
-const element = {
-  type: "h1",
-  props: {
-    children: "Hello, React!",
-  },
-};
+
 ```
 
 When React encounters this object during the rendering process, it uses the information stored in the object to create the corresponding DOM elements.
 
 ```jsx
-// Rendering process (very simplified)
-const domElement = document.createElement(element.type);
-domElement.textContent = element.props.children;
+
 ```
 
 This is a simplified example, and React performs additional optimizations and reconciliations to efficiently update the DOM based on changes in the application state.
@@ -310,22 +246,7 @@ Props are pieces of data that you can pass from a parent component to a child co
 You pass props from a parent component to a child component by adding attributes to the child component tag in the parent's JSX.
 
 ```tsx
-function ParentComponent() {
-  return <ChildComponent name="John" age={25} />;
-}
 
-interface IChildComponentProps {
-  name: string;
-  age: number;
-}
-
-function ChildComponent(props: IChildComponentProps) {
-  return (
-    <p>
-      {props.name} is {props.age} years old.
-    </p>
-  );
-}
 ```
 
 [Back to top](#intro-to-react)
@@ -341,27 +262,7 @@ In the child component, you can access the passed props through the function's p
 Props allow you to make your components more flexible by changing their behavior based on the data passed to them. For example, you can reuse the `ChildComponent` with different names and ages by passing different values as props.
 
 ```tsx
-function App() {
-  return (
-    <div>
-      <ChildComponent name="Alice" age={30} />
-      <ChildComponent name="Bob" age={22} />
-    </div>
-  );
-}
 
-interface IChildComponentProps {
-  name: string;
-  age: number;
-}
-
-function ChildComponent(props: IChildComponentProps) {
-  return (
-    <p>
-      {props.name} is {props.age} years old.
-    </p>
-  );
-}
 ```
 
 [Back to top](#intro-to-react)
@@ -381,43 +282,13 @@ When that icon is clicked we want to invoke a deleting function in the parent co
 _TodoList.tsx_
 
 ```tsx
-import TodoListItem from "./TodoListItem";
 
-export function TodoList(): JSX.Element {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  const deleteTodo = (todoId: number): void => {
-    // ..code to delete a todo from the todo list and update the state
-  };
-
-  return (
-    <section className="todo-list">
-      {todos.map((todo) => (
-        <TodoListItem deleteTodo={deleteTodo} key={todo.id} todo={todo} />
-      ))}
-    </section>
-  );
-}
 ```
 
 _TodoListItem.tsx_
 
 ```tsx
-interface ITodoListItemProps {
-  deleteTodo: (todoId: number) => void;
-  todo: ITodo;
-}
 
-export function TodoListItem(props: ITodoListItemProps): JSX.Element {
-  return (
-    <article className="todo">
-      <span>{todo.content}</span>
-      <span class="material-symbols-outlined" onClick={() => deleteTodo(todo.id)}>
-        delete
-      </span>
-    </article>
-  );
-}
 ```
 
 Above we can see something that we haven't seen before, and it's the structure of the handler function on the "onClick" attribute.
@@ -436,188 +307,3 @@ If the prop-function didn't accept a parameter we could have just put the refere
 
 [Back to top](#intro-to-react)
 
-## Hooks
-
-Hooks are functions that allow you to use state and other React features in functional components. They were introduced in React version 16.8 to provide a way to use state and lifecycle features in functional components, which were traditionally only available in class components.
-
-There are several hooks included in React and almost every "react specific third party library" is utilizing and provides hooks for us to use in our applications.
-
-Hooks are very versatile and can be used in many different use cases. Think of them as special JS functions with access to all React features despite not being a component. They usually contain business logic so it can be reused across your application.
-
-There are two rules that must be followed when using and creating them:
-
-1. Only call hooks at the top level of your component.
-2. Only call hooks from React functional components or other hooks.
-
-[Back to top](#intro-to-react)
-
-### `useState`
-
-`useState` hook is used to add state to functional components. The useState hook returns an array with two elements: the current state value and a function that allows you to update the state.
-
-```tsx
-import React, { useState } from "react";
-
-function Counter() {
-  // Declare a state variable named "count" with initial value 0
-  const [count, setCount] = useState<number>(0);
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      {/* onClick event handler to update the count state */}
-      <button onClick={() => setCount(count + 1)}>Click me</button>
-    </div>
-  );
-}
-```
-
-`useState<number>(0)` initializes the state variable count with an initial value of 0. The setCount function is used to update the value of count. When the button is clicked, it triggers the onClick event, and the setCount function is called to increment the count by 1.
-
-React re-renders the component whenever the state is updated, and the updated state is reflected in the UI.
-
-You can use multiple useState hooks in a single component to manage different pieces of state.
-
-```tsx
-import React, { useState } from "react";
-
-function Example() {
-  const [count, setCount] = useState<number>(0);
-  const [name, setName] = useState<string>("");
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
-
-      <p>Your name is: {name}</p>
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-    </div>
-  );
-}
-```
-
-In this example, there are two separate state variables, count and name, each with its own useState hook. The setCount and setName functions are used to update these state variables, and the UI is re-rendered accordingly.
-
-[Back to top](#intro-to-react)
-
-#### Two forms of the setState
-
-The set-method from the useState hook comes in two forms and they are:
-
-- **Updating the state based on the previous value**
-
-  If the new state depends on the previous state, it's recommended to use the functional form of `setState`, where you provide a function as an argument to `setState`. This function receives the previous state as its argument and returns the new state.
-
-  ```js
-  setState((prevState) => {
-    // calculate and return new state based on prevState
-    return newState;
-  });
-  ```
-
-  This ensures that you are working with the latest state and helps prevent race conditions when updating state asynchronously.
-
-- **Updating state without depending on the previous value**
-
-  If the new state does not depend on the previous state, you can simply pass the new state value to `setState`. In this case, you can use the non-functional form of `setState`.
-
-  ```js
-  setState(newState);
-  ```
-
-Both forms of setState will trigger a re-render of the component with the updated state.
-
-Here is an actual example of the usage of the different forms:
-
-```tsx
-import React, { useState } from "react";
-
-function Counter() {
-  const [count, setCount] = useState<number>(0);
-
-  const increment = () => {
-    // Using the functional form of setState
-    setCount((prevCount) => prevCount + 1);
-  };
-
-  const reset = () => {
-    // Using the non-functional form of setState
-    setCount(0);
-  };
-
-  return (
-    <div>
-      <p>Count: {count}</p>
-      <button onClick={increment}>Increment</button>
-      <button onClick={reset}>Reset</button>
-    </div>
-  );
-}
-```
-
-In the increment function, the functional form of setCount is used to correctly update the count based on its previous value. In the reset function, the non-functional form is used because the new state _( 0 in this case )_ does not depend on the previous state.
-
-[Back to top](#intro-to-react)
-
-### `useEffect`
-
-`useEffect` is a hook in React that allows functional components to perform side effects. Side effects in React typically include data fetching, subscriptions, manual DOM manipulations, and other operations that cannot be handled during the render phase. useEffect is a replacement for lifecycle methods like `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in class components.
-
-```jsx
-useEffect(() => {
-  // Side effect code here
-
-  return () => {
-    // Cleanup code (optional)
-  };
-}, [dependencies]);
-```
-
-1. The first argument to useEffect is a function that contains the code for the side effect you want to perform.
-
-2. The second argument is an optional array of dependencies. If the dependencies array is provided, the effect will only re-run if any of the values in the dependencies array change between renders. If the dependencies array is omitted, the effect will run after every render.
-
-3. The function returned from useEffect can be used for cleanup. This cleanup function will be executed before the next render or before the component is unmounted. It's useful for cleaning up resources like subscriptions or timers to prevent memory leaks.
-
-#### Common usages of useEffect
-
-**useEffect() is invoked on every render and state or props change**
-
-```jsx
-useEffect(() => {
-  console.log("This log runs on every render and on every update of any state or props change");
-}); // No second argument
-```
-
-**useEffect() that is only invoked on the initial render of the component**
-
-```jsx
-useEffect(() => {
-  console.log("This log runs only on the initial render of the component.");
-}, []); // Second arguments i an empty array, important!
-```
-
-**useEffect() that is invoked on the initial render and when a specified dependency is updated**
-
-```jsx
-useEffect(() => {
-  console.log("This log is run on the initial render and when a specified dependency is updated");
-}, [name]); // Second argument is an array with the specific dependency or dependencies that should trigger a invocation of the effect. Think of this as a listener on the specific variable.
-```
-
-**useEffect() that includes a clean-up function that runs when the component is demounted or before the next rerendering of the component**
-
-```jsx
-useEffect(() => {
-  return () => {
-    console.log("This clean-up is run before the next render or when the component is demounted");
-  };
-}); // The second argument can be either an empty array, an array with dependencies or omittet. It all depends on how often you want the clean-up to run.
-```
-
-[Back to top](#intro-to-react)
-
-### `useRef`
-
-[Back to top](#intro-to-react)
