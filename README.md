@@ -65,7 +65,24 @@ React uses a declarative syntax, meaning developers describe what the UI should 
 React encourages building UIs with a component-based architecture, where the interface is divided into small, reusable pieces. Each component manages its own logic and rendering, which makes applications more modular, maintainable, and easier to scale. This approach is especially powerful in large projects, as it promotes reusability, consistency, and clear separation of concerns.
 
 ```jsx
+// Vanilla JS
+const header = document.createElement("header");
+const title = document.createElement("h1");
+title.classList.add("title");
+title.innerText = "My App"
+header.appendChild(title);
+document.body.appendChild(header);
 
+// React
+const Header = (): ReactElement => {
+  return (
+    <header>
+      <h1 className="title">My App</h1>
+    </header>
+  )
+}
+
+createRoot(document.getElementById('root')).render(<Header/>)
 ```
 
 [Back to top](#intro-to-react)
@@ -123,7 +140,15 @@ Under the hood, JSX is not HTML — it’s compiled into plain JavaScript functi
 [React Docs](https://react.dev/learn/writing-markup-with-jsx) – Introducing JSX (beginner friendly)
 
 ```jsx
+// Vanilla JavaScript
+const element = document.createElement('div');
+element.innerText = 'Hello world!';
+document.getElementById('root').appendChild(element);
 
+// React
+function Element (): ReactElemenmt {
+  return <div>Hello World!</div>
+}
 ```
 
 [Back to top](#intro-to-react)
@@ -146,14 +171,35 @@ In summary, React simplifies frontend development by providing a declarative syn
 
 To create a component in React you just have to create a function that starts with a capital letter and returns JSX.
 
-```jsx
+```tsx
+// With function keyword
+export function Footer (): ReactElement {
+  return <footer className="footer">This is the footer</footer>
+}
 
+// With arrow function
+export const Footer = (): ReactElement => {
+  return <footer className="footer">This is the footer</footer>
+}
 ```
 
 This footer can then be used inside another component as a JSX element. In this case I am going to import this footer component inside my app component.
 
-```jsx
+```tsx
+import { Footer } from "./Footer";
 
+function App(): ReactElement {
+  return
+  // React fragment, components can only render one parent element. In order to get around that we must use fragments.
+  <>
+    <h1>This is my first App!</h1>
+    <div>
+      <p>This is the content</p>
+      <section>This is a random section</section>
+    </div>
+    <Footer />
+  </>
+}
 ```
 
 Remember to import the footer as you do any regular function and then encapsulate that inside a JSX element like the example above. Now React will inject the Footer component inside the App component.
