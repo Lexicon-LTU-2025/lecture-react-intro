@@ -66,10 +66,10 @@ React encourages building UIs with a component-based architecture, where the int
 
 ```jsx
 // Vanilla JS
-const header = document.createElement("header");
-const title = document.createElement("h1");
-title.classList.add("title");
-title.innerText = "My App"
+const header = document.createElement('header');
+const title = document.createElement('h1');
+title.classList.add('title');
+title.innerText = 'My App';
 header.appendChild(title);
 document.body.appendChild(header);
 
@@ -79,10 +79,10 @@ const Header = (): ReactElement => {
     <header>
       <h1 className="title">My App</h1>
     </header>
-  )
-}
+  );
+};
 
-createRoot(document.getElementById('root')).render(<Header/>)
+createRoot(document.getElementById('root')).render(<Header />);
 ```
 
 [Back to top](#intro-to-react)
@@ -146,8 +146,8 @@ element.innerText = 'Hello world!';
 document.getElementById('root').appendChild(element);
 
 // React
-function Element (): ReactElemenmt {
-  return <div>Hello World!</div>
+function Element(): ReactElemenmt {
+  return <div>Hello World!</div>;
 }
 ```
 
@@ -173,23 +173,23 @@ To create a component in React you just have to create a function that starts wi
 
 ```tsx
 // With function keyword
-export function Footer (): ReactElement {
-  return <footer className="footer">This is the footer</footer>
+export function Footer(): ReactElement {
+  return <footer className="footer">This is the footer</footer>;
 }
 
 // With arrow function
 export const Footer = (): ReactElement => {
-  return <footer className="footer">This is the footer</footer>
-}
+  return <footer className="footer">This is the footer</footer>;
+};
 ```
 
 This footer can then be used inside another component as a JSX element. In this case I am going to import this footer component inside my app component.
 
 ```tsx
-import { Footer } from "./Footer";
+import { Footer } from './Footer';
 
 function App(): ReactElement {
-  return
+  return;
   // React fragment, components can only render one parent element. In order to get around that we must use fragments.
   <>
     <h1>This is my first App!</h1>
@@ -198,7 +198,7 @@ function App(): ReactElement {
       <section>This is a random section</section>
     </div>
     <Footer />
-  </>
+  </>;
 }
 ```
 
@@ -214,10 +214,10 @@ Here are some key points about JSX:
 
 - **HTML-Like Syntax**
 
-  JSX looks similar to HTML, making it easier for developers who are already familiar with HTML to work with React. However, it's important to note that JSX is not HTML; it's a syntax extension for JavaScript.
+  JSX looks similar to HTML, making it easier for developers who are already familiar with HTML to work with React. However, it's important to note that JSX is not HTML. It's a syntax extension for JavaScript.
 
   ```jsx
-
+  const element = <h1>Hello, React!</h1>;
   ```
 
 - **JavaScript Expressions**
@@ -225,7 +225,22 @@ Here are some key points about JSX:
   You can embed JavaScript expressions inside JSX by wrapping them in curly braces `{ }`. This allows you to dynamically generate content.
 
   ```jsx
+  const name: string = 'Niklas';
+  const element = <p>Hello {name}!</p>;
+  ```
 
+  The expressions can also be more complicated like a ternary for example.
+
+  ```jsx
+  const isCool: boolean = true;
+
+  const element = (
+    <p>
+      Is {name} a cool person? {isCool ? 'True!' : 'False!'}
+    </p>
+  );
+
+  // Is Niklas a cool person? True!
   ```
 
 - **Components**
@@ -233,7 +248,11 @@ Here are some key points about JSX:
   JSX allows you to create custom components easily. Components in React are reusable and self-contained pieces of code that encapsulate a specific piece of functionality.
 
   ```jsx
+  import { ReactElement } from 'react';
 
+  const Componenet = (): ReactElement => {
+    return <div>Hello from Componenet!</div>;
+  };
   ```
 
 - **Attributes**
@@ -241,7 +260,8 @@ Here are some key points about JSX:
   JSX uses HTML-like attributes for defining component properties. React will convert these attributes into props, which can be accessed within the component.
 
   ```jsx
-
+  const imgSrc = 'www.someimageurl.se';
+  const img = <img id="main-image" src={imgSrc} />;
   ```
 
 - **Self-Closing Tags**
@@ -249,7 +269,7 @@ Here are some key points about JSX:
   Just like in HTML, JSX supports self-closing tags for elements that don't have any content.
 
   ```jsx
-
+  const imgElement = <img src="image.jpg" alt="An example" />;
   ```
 
 - **ClassName vs. Class**
@@ -257,7 +277,7 @@ Here are some key points about JSX:
   To specify the CSS class for an element, you use `className` in JSX, not class. This is because class is a reserved keyword in JavaScript.
 
   ```jsx
-
+  const element = <div className="myClass">Hello, React!</div>;
   ```
 
 ### **JSX is Transpiled**
@@ -265,7 +285,11 @@ Here are some key points about JSX:
 JSX is not understood by browsers directly. It must be transpiled into regular JavaScript before execution. In React projects, this is handled automatically by tools like Babel.
 
 ```jsx
+// JSX
+const element = <h1 id="main-header">Hello, React!</h1>;
 
+// After transpilation
+const element = React.createElement('h1', { id: "main-header" }, 'Hello, React!');
 ```
 
 To explain what is happening in the above code, in the method more specifically, it works like this:
@@ -279,13 +303,21 @@ To explain what is happening in the above code, in the method more specifically,
 React then creates an internal object describing the element, for example:
 
 ```jsx
-
+const element = {
+  type: 'h1',
+  props: {
+    id: "main-header"
+    children: 'Hello, React!',
+  },
+};
 ```
 
 When React renders, it uses this object to create and efficiently update the DOM.
 
 ```jsx
-
+  const domEl = document.createElement(element.type)
+  domEl.id = element.props.id;
+  domEl.textContent = element.props.children;
 ```
 
 This is a simplified example, and React performs additional optimizations and reconciliations to efficiently update the DOM based on changes in the application state.
