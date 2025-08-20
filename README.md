@@ -424,3 +424,20 @@ function Parent(): ReactElement {
 ### Immutable
 
 Props in React are immutable, meaning their values cannot be changed inside the child component. They are read-only. If you need to modify data, you typically do it in the parent component and pass the updated data down as a new prop.
+
+## Hooks
+
+Hooks are functions that allow you to use state and other React features in functional components. They were introduced in React version 16.8 to provide a way to use state and lifecycle features in functional components, which were traditionally only available in class components.
+
+There are several hooks included in React and almost every "react specific third party library" is utilizing and provides hooks for us to use in our applications.
+
+Hooks are very versatile and can be used in many different use cases. Think of them as special JS functions with access to all React features despite not being a component. They usually contain business logic so it can be reused across your application.
+
+There are two rules that must be folloew when using and creating them:
+
+1. Only call hooks at the top level of your component
+2. Only call hooks from React functional components OR other hooks.
+
+### `useState`
+
+`useState` hook is used to add state to functional components. The useState hook returns an array with two elements: the current state value and a function that allows you to update the state.
