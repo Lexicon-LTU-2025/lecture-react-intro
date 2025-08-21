@@ -39,6 +39,8 @@ The moment we all have been wating for is here. Let's get started with React!
 
   - [useState](#usestate)
     - [Two forms of the setState](#two-forms-of-the-setstate)
+  - [useEffect](#useeffect)
+    - [Common usages of useEffect](#common-usages-of-useeffect)
 
 </details>
 
@@ -549,5 +551,63 @@ function Counter() {
 ```
 
 In the increment function, the functional form of setCount is used to correctly update the count based on its previous value. In the reset function, the non-functional form is used because the new state _( 0 in this case )_ does not depend on the previous state.
+
+[Back to top](#intro-to-react)
+
+### `useEffect`
+
+`useEffect` is a hook in React that allows functional components to perform side effects. Side effects in React typically include data fetching, subscriptions, manual DOM manipulations, and other operations that cannot be handled during the render phase. useEffect is a replacement for lifecycle methods like `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in class components.
+
+```jsx
+useEffect(() => {
+  // Side effect code here
+
+  return () => {
+    // Cleanup code (optional)
+  };
+}, [dependencies]);
+```
+
+1. The first argument to useEffect is a function that contains the code for the side effect you want to perform.
+
+2. The second argument is an optional array of dependencies. If the dependencies array is provided, the effect will only re-run if any of the values in the dependencies array change between renders. If the dependencies array is omitted, the effect will run after every render.
+
+3. The function returned from useEffect can be used for cleanup. This cleanup function will be executed before the next render or before the component is unmounted. It's useful for cleaning up resources like subscriptions or timers to prevent memory leaks.
+
+#### Common usages of useEffect
+
+**useEffect() is invoked on every render and state or props change**
+
+```jsx
+useEffect(() => {
+  console.log('This log runs on every render and on every update of any state or props change');
+}); // No second argument
+```
+
+**useEffect() that is only invoked on the initial render of the component**
+
+```jsx
+useEffect(() => {
+  console.log('This log runs only on the initial render of the component.');
+}, []); // Second arguments i an empty array, important!
+```
+
+**useEffect() that is invoked on the initial render and when a specified dependency is updated**
+
+```jsx
+useEffect(() => {
+  console.log('This log is run on the initial render and when a specified dependency is updated');
+}, [name]); // Second argument is an array with the specific dependency or dependencies that should trigger a invocation of the effect. Think of this as a listener on the specific variable.
+```
+
+**useEffect() that includes a clean-up function that runs when the component is demounted or before the next rerendering of the component**
+
+```jsx
+useEffect(() => {
+  return () => {
+    console.log('This clean-up is run before the next render or when the component is demounted');
+  };
+}); // The second argument can be either an empty array, an array with dependencies or omittet. It all depends on how often you want the clean-up to run.
+```
 
 [Back to top](#intro-to-react)

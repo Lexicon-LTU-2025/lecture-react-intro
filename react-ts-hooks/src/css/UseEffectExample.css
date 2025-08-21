@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+}
+
+body {
+  padding-inline: 1rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+/* HTML: <div class="loader"></div> */
+.use-effect-example .loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #000 #0000;
+  animation: l1 1s infinite;
+}
+
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
+
+.use-effect-example .character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.use-effect-example .actions {
+  border: 1px solid black;
+  padding: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.use-effect-example .actions .character-number,
+.use-effect-example .actions .name-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.use-effect-example .actions .character-number input {
+  width: 50px;
+}
