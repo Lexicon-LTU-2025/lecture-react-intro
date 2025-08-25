@@ -1,0 +1,21 @@
+.use-ref-example {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding-top: 2rem;
+}
+
+.use-ref-example .form {
+  display: flex;
+  gap: 1rem;
+}
+
+.use-ref-example button {
+  align-self: flex-start;
+}
+
+.use-ref-example .ticker {
+  display: flex;
+  gap: 1rem;
+}

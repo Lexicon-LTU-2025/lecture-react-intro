@@ -41,6 +41,7 @@ The moment we all have been wating for is here. Let's get started with React!
     - [Two forms of the setState](#two-forms-of-the-setstate)
   - [useEffect](#useeffect)
     - [Common usages of useEffect](#common-usages-of-useeffect)
+  - [useRef](#useref)
 
 </details>
 
@@ -609,5 +610,66 @@ useEffect(() => {
   };
 }); // The second argument can be either an empty array, an array with dependencies or omittet. It all depends on how often you want the clean-up to run.
 ```
+
+[Back to top](#intro-to-react)
+
+### `useRef`
+
+`useRef` is a hook used to create a **reference** to a DOM element or to store a **value that does not trigger a re-render**.
+Think of a ref as a little “box” where you can put something, and React will remember it between renders.
+
+Two common use cases:
+
+1. **Referencing DOM elements** (e.g., focusing an input field).
+2. **Storing values between renders** without causing a re-render (e.g., timers).
+
+#### Example: Focusing an input field with `useRef`
+
+```tsx
+import { useRef } from 'react';
+
+export const FocusInput(): ReactElement => {
+  // 1) Tell TS what kind of element the ref will hold
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleClick = (): void => {
+    // 2) inputRef.current can be HTMLInputElement or null
+    inputRef.current?.focus();
+  };
+
+  return (
+    <div>
+      <input ref={inputRef} type="text" placeholder="Type something..." />
+      <button onClick={handleClick}>Focus the input</button>
+    </div>
+  );
+}
+
+```
+
+#### TypeScript explanation (why and how)
+
+- `useRef<HTMLInputElement | null>(null)`
+
+  - The generic (`<HTMLInputElement | null>`) tells TS what `current` will hold.
+
+  - It starts as null before the element mounts, so include `| null`.
+
+- Access with `inputRef.current?.focus()`
+
+  - Optional chaining avoids a null check; TS knows `current` might be `null`.
+
+- Return type `ReactElement` is optional but nice for clarity.
+
+If you want to type the click handler explicitly:
+`const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => { ... }`
+
+#### What happens in the code above?
+
+- `useRef(null)` creates a ref with the initial value `null`.
+- When `<input>` renders, we attach `ref={inputRef}` to it.
+- After rendering, `inputRef.current` points to the actual DOM element.
+- When the button is clicked, `handleClick` runs and calls `inputRef.current?.focus()`.
+  → The input field gets focus immediately.
 
 [Back to top](#intro-to-react)
